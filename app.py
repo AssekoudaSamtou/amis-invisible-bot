@@ -2,8 +2,16 @@ from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 from twilio.rest import Client
 
-from data import numero_destinataire
+import json
 
+def numero_destinataire(num_expediteur):
+
+	num_expediteur = num_expediteur[4:]
+
+	with open('../correspondance.json') as myfile:
+		obj = json.loads(myfile.read())
+
+	return  obj[0][num_expediteur]
 
 account_sid = 'ACc3e070169a034ce2c67a0dde60f7e093' 
 auth_token = '969faef6f728a75fa0bdbd7b84c50378' 
