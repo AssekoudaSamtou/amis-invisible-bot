@@ -1,5 +1,14 @@
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
+from twilio.rest import Client
+
+from data import numero_destinataire
+
+
+account_sid = 'ACc3e070169a034ce2c67a0dde60f7e093' 
+auth_token = '969faef6f728a75fa0bdbd7b84c50378' 
+client = Client(account_sid, auth_token) 
+
 
 app = Flask(__name__)
 
@@ -11,12 +20,22 @@ def hello():
 def sms_reply():
 	"""Respond to incoming calls with a simple text message."""
 	# Fetch the message
-	
+
 	msg = request.form.get('Body')
+	from_ = request.form.get('From')
+	to = numero_destinataire(from_)
 
 	# Create reply
 	resp = MessagingResponse()
-	resp.message("*You said: {}*".format(request.form))
+
+	message = client.messages.create( 
+		from_='whatsapp:+14155238886',  
+		body='Your appointment is coming up on July 21 at 3PM',      
+		to='whatsapp:+228'+to
+	)
+	print("####", message.sid)
+
+	resp.message("{}".format(message))
 
 	return str(resp)
 
