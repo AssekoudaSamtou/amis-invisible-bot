@@ -43,7 +43,7 @@ def sms_reply():
 	)
 	print("####", message.sid)
 
-	resp.message("{}".format(message))
+	resp.message("")
 
 	return str(resp)
 
